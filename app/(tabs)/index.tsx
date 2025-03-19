@@ -1,9 +1,14 @@
 import { Text, StyleSheet, View } from "react-native";
-
+import { StatusBar } from "expo-status-bar";
+import { Link } from "expo-router";
 export default function HomeScreen() {
   return (
     <View>
       <Text>Hello World</Text>
+      <StatusBar style="auto" />
+      <Link href="/Profile" style={{ color: "blue" }}>
+        Go to profile
+      </Link>
     </View>
   );
 }
