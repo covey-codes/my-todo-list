@@ -8,19 +8,19 @@ import {
 } from "react-native";
 import { Link, router } from "expo-router";
 
-export default function LoginScreen() {
+export default function SignupScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    // You will integrate API login here
+  const handleSignup = () => {
+    // You will integrate API signup here
     router.push("/");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back</Text>
-      <Text style={styles.subtitle}>Login to continue</Text>
+      <Text style={styles.title}>Create Account</Text>
+      <Text style={styles.subtitle}>Join us today!</Text>
 
       <TextInput
         placeholder="Email"
@@ -40,12 +40,12 @@ export default function LoginScreen() {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
-      <Link href="/screens/Signup" style={styles.link}>
-        Don't have an account? <Text style={styles.linkText}>Sign up</Text>
+      <Link href="/" style={styles.link}>
+        Already have an account? <Text style={styles.linkText}>Login</Text>
       </Link>
     </View>
   );
