@@ -5,16 +5,53 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Link, router } from "expo-router";
 
 export default function SignupScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = () => {
-    // You will integrate API signup here
-    router.push("/");
+  const handleSignup = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please fill all fields");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        "https://api-nodejs-todolist.herokuapp.com/user/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      console.log("Response Status:", response.status);
+
+      const data = await response.json();
+      console.log("Response Data:", data);
+
+      if (response.ok) {
+        Alert.alert("Success", "Signup Successful!");
+        console.log("Token:", data.token);
+        router.push("/");
+      } else {
+        Alert.alert("Error", data.message || "Signup failed");
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to connect to the server.");
+      console.error("Signup Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,8 +77,14 @@ export default function SignupScreen() {
         secureTextEntry
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleSignup}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? "Signing up..." : "Sign Up"}
+        </Text>
       </TouchableOpacity>
 
       <Link href="/" style={styles.link}>

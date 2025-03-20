@@ -6,21 +6,20 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { Link, router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function LoginScreen() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    // You will integrate API login here
-    router.push("/");
+    router.push("/screens/todo");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back</Text>
-      <Text style={styles.subtitle}>Login to continue</Text>
+      <Text style={styles.title}>Login</Text>
 
       <TextInput
         placeholder="Email"
@@ -43,10 +42,6 @@ export default function LoginScreen() {
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-
-      <Link href="/screens/Signup" style={styles.link}>
-        Don't have an account? <Text style={styles.linkText}>Sign up</Text>
-      </Link>
     </View>
   );
 }
@@ -63,11 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#666",
     marginBottom: 20,
   },
   input: {
@@ -86,24 +76,11 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 10,
     alignItems: "center",
-    shadowColor: "#007bff",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
     marginTop: 10,
   },
   buttonText: {
     color: "#fff",
     fontSize: 18,
-    fontWeight: "bold",
-  },
-  link: {
-    marginTop: 15,
-    fontSize: 16,
-    color: "#666",
-  },
-  linkText: {
-    color: "#007bff",
     fontWeight: "bold",
   },
 });
