@@ -9,19 +9,31 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+interface Task {
+  text: string;
+  completed: boolean;
+}
+
 const TodoApp = () => {
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState("");
 
   const addTask = () => {
     if (task.trim() !== "") {
-      setTasks([...tasks, task]);
+      setTasks([...tasks, { text: task, completed: false }]);
       setTask("");
     }
   };
 
   const removeTask = (index: number) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+  const toggleTask = (index: number) => {
+    const updatedTasks = tasks.map((item, i) =>
+      i === index ? { ...item, completed: !item.completed } : item
+    );
     setTasks(updatedTasks);
   };
 
@@ -49,7 +61,16 @@ const TodoApp = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
           <View style={styles.taskItem}>
-            <Text style={styles.taskText}>{item}</Text>
+            <TouchableOpacity onPress={() => toggleTask(index)}>
+              <Ionicons
+                name={item.completed ? "checkmark-circle" : "ellipse-outline"}
+                size={24}
+                color={item.completed ? "green" : "gray"}
+              />
+            </TouchableOpacity>
+            <Text style={[styles.taskText, item.completed && styles.completed]}>
+              {item.text}
+            </Text>
             <TouchableOpacity onPress={() => removeTask(index)}>
               <Ionicons name="trash-bin" size={24} color="red" />
             </TouchableOpacity>
@@ -115,5 +136,11 @@ const styles = StyleSheet.create({
   taskText: {
     fontSize: 16,
     color: "#333",
+    flex: 1,
+    marginLeft: 10,
+  },
+  completed: {
+    textDecorationLine: "line-through",
+    color: "gray",
   },
 });
